@@ -24,4 +24,4 @@ class Command(BaseCommand):
                 await sync_to_async(token.save)()
                 await message.answer("Successful binding token.")
 
-        executor.start_polling(dispatcher)
+        executor.start_polling(dispatcher, skip_updates=True)

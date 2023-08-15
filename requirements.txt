@@ -2,3 +2,4 @@ django
 djangorestframework
 aiogram
 python-dotenv
+django-cors-headers

@@ -20,7 +20,7 @@ class MessageViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         message: models.Message = serializer.save(sender=self.request.user)
         with suppress(ValidationError):
-            bot = Bot(settings.TELEGRAM_BOT_TOKEN)
+            bot = Bot(settings.TELEGRAM_BOT_TOKEN, proxy=settings.TELEGRAM_BOT_PROXY)
             for token in models.Token.objects.filter(user=self.request.user):
                 if token.telegram_chat_id is None:
                     continue

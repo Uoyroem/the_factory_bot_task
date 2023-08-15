@@ -27,8 +27,8 @@ SECRET_KEY = environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-
-ALLOWED_HOSTS = ["kebapich.pythonanywhere.com"]
+CORS_ALLOW_ALL_ORIGINS = True
+ALLOWED_HOSTS = ["kebapich.pythonanywhere.com", "localhost"]
 
 # Application definition
 
@@ -41,11 +41,13 @@ INSTALLED_APPS = [
     "the_factory_bot_task.users",
     "the_factory_bot_task.messages",
     "rest_framework",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
