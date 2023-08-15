@@ -21,5 +21,5 @@ api_urlpatterns = [
     path("", include("the_factory_bot_task.users.urls")),
     path("", include("the_factory_bot_task.messages.urls")),
 ]
-
+handler404 = "the_factory_bot_task.views.handler404"
 urlpatterns = [path("api/", include(api_urlpatterns))]
