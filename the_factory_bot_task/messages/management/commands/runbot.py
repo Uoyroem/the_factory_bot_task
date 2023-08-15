@@ -10,7 +10,7 @@ from the_factory_bot_task.messages.models import Token
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        bot = Bot(settings.TELEGRAM_BOT_TOKEN)
+        bot = Bot(settings.TELEGRAM_BOT_TOKEN, proxy=settings.TELEGRAM_BOT_PROXY)
         dispatcher = Dispatcher(bot)
 
         @dispatcher.message_handler()

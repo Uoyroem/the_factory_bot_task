@@ -128,3 +128,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 TELEGRAM_BOT_TOKEN = environ.get("TELEGRAM_BOT_TOKEN")
+TELEGRAM_BOT_PROXY = environ.get("TELEGRAM_BOT_PROXY")
