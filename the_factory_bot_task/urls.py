@@ -16,4 +16,10 @@ Including another URLconf
 """
 from django.urls import include, path
 
-urlpatterns = [path("api/", include("the_factory_bot_task.users.urls"))]
+
+api_urlpatterns = [
+    path("", include("the_factory_bot_task.users.urls")),
+    path("", include("the_factory_bot_task.messages.urls")),
+]
+
+urlpatterns = [path("api/", include(api_urlpatterns))]
