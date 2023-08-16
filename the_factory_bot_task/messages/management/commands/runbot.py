@@ -29,17 +29,17 @@ After linking, you can send messages from {reverse('message-list')}."""
             try:
                 token = await sync_to_async(Token.objects.get)(token=message.text)
             except Token.DoesNotExist:
-                await message.answer(_("Invalid token."))
+                await message.answer("Неправильный токен.")
             else:
                 if token.chat_id is None:
                     token.chat_id = message.chat.id
                     await sync_to_async(token.save)()
                     await message.answer(
-                        _(
-                            f'The token was successfully linked to "{await sync_to_async(token.user.get_full_name)()}".'
-                        )
+                        f"Токен успешно связан с {await sync_to_async(token.user.get_full_name)()}"
                     )
                 else:
-                    await message.answer(_("The token is already linked."))
+                    await message.answer(
+                        f"Токен уже связан с {await sync_to_async(token.user.get_full_name)()}."
+                    )
 
         executor.start_polling(dispatcher, skip_updates=True)
