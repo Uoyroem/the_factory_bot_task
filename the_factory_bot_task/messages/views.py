@@ -4,7 +4,7 @@ from rest_framework import viewsets, permissions
 from rest_framework.exceptions import APIException, NotFound
 from aiogram import Bot
 from django.conf import settings
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext as _
 
 
 import aiogram.utils.exceptions
@@ -38,7 +38,7 @@ class MessageViewSet(viewsets.ModelViewSet):
         asyncio.run(
             bot.send_message(
                 token.chat_id,
-                f"{message.sender.get_full_name()}, я получил от тебя сообщение: \n{message.message}",
+                f"{message.sender.get_full_name()}, {_('I got a message from you')}: \n{message.message}",
             )
         )
 
@@ -54,4 +54,4 @@ class TokenViewSet(viewsets.ModelViewSet):
         except models.Token.DoesNotExist:
             serializer.save(user=self.request.user)
         else:
-            raise APIException(_("You have already created a token"), 400)
+            raise APIException(_("You have already created a token."), 400)
