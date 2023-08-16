@@ -36,7 +36,7 @@ After linking, you can send messages from {reverse('message-list')}."""
                     await sync_to_async(token.save)()
                     await message.answer(
                         _(
-                            f'The token was successfully linked to "{token.user.get_full_name()}".'
+                            f'The token was successfully linked to "{await sync_to_async(token.user.get_full_name)()}".'
                         )
                     )
                 else:
