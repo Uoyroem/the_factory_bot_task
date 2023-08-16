@@ -47,7 +47,7 @@ class MessageViewSet(viewsets.ModelViewSet):
         asyncio.run(
             bot.send_message(
                 token.chat_id,
-                f"{message.sender.get_full_name()}, {_('I got a message from you')}: \n{message.message}",
+                f"{message.sender.get_full_name()}, я получил от тебя сообщение: \n{message.message}",
             )
         )
 
