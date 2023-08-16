@@ -22,6 +22,13 @@ class MessageViewSet(viewsets.ModelViewSet):
     ]
     queryset = models.Message.objects.all()
 
+    @action(detail=False)
+    def my_messages(self, request: Request) -> Response:
+        serializer = serializers.MessageSerializer(
+            models.Message.objects.filter(sender=request.user), many=True
+        )
+        return Response(serializer.data)
+
     def perform_create(self, serializer):
         message: models.Message = serializer.save(sender=self.request.user)
         try:
