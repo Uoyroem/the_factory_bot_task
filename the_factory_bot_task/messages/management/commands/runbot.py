@@ -33,12 +33,8 @@ class Command(BaseCommand):
                 if token.chat_id is None:
                     token.chat_id = message.chat.id
                     await sync_to_async(token.save)()
-                    await message.answer(
-                        f"Токен успешно связан с {await sync_to_async(token.user.get_full_name)()}"
-                    )
+                    await message.answer(f"Токен успешно связан.")
                 else:
-                    await message.answer(
-                        f"Токен уже связан с {await sync_to_async(token.user.get_full_name)()}."
-                    )
+                    await message.answer(f"Токен уже связан.")
 
         executor.start_polling(dispatcher, skip_updates=True)
