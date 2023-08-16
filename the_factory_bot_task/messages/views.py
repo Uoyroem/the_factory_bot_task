@@ -28,11 +28,17 @@ class MessageViewSet(viewsets.ModelViewSet):
                 _("The bot token was not specified."),
                 400,
             )
-
-        token: models.Token = self.request.user.token
-        if token is None or token.chat_id is None:
+        token = None
+        try:
+            token: models.Token = self.request.user.token
+        except models.Token.DoesNotExist:
             raise APIException(
-                _("You don't have a token or you haven't linked the token to the bot."),
+                _("You don't have a token."),
+                400,
+            )
+        if token.chat_id is None:
+            raise APIException(
+                _("You haven't linked the token to the bot."),
                 400,
             )
         asyncio.run(
