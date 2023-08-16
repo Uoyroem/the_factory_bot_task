@@ -15,11 +15,25 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import include, path
+from .users.views import UserReadOnlyViewSet
+from .messages.views import MessageViewSet, TokenViewSet
+from rest_framework import routers
+from rest_framework.decorators import api_view
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.exceptions import NotFound
+from django.utils.translation import gettext_lazy as _
 
 
-api_urlpatterns = [
-    path("", include("the_factory_bot_task.users.urls")),
-    path("", include("the_factory_bot_task.messages.urls")),
-]
-handler404 = "the_factory_bot_task.views.handler404"
-urlpatterns = [path("api/", include(api_urlpatterns))]
+default_router = routers.DefaultRouter()
+default_router.register("users", UserReadOnlyViewSet, "user")
+default_router.register("messages", MessageViewSet, "message")
+default_router.register("tokens", TokenViewSet, "token")
+
+
+@api_view()
+def handler404(request: Request, exception: Exception) -> Response:
+    raise NotFound
+
+
+urlpatterns = [path("api/", include(default_router.urls))]

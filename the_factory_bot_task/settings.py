@@ -26,9 +26,9 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = environ.get("DEBUG").lower() == "true"
 CORS_ALLOW_ALL_ORIGINS = True
-ALLOWED_HOSTS = ["kebapich.pythonanywhere.com", "localhost"]
+ALLOWED_HOSTS = environ.get("ALLOWED_HOSTS").split(",")
 
 # Application definition
 
@@ -108,7 +108,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ru-ru"
+LOCALE_PATHS = [BASE_DIR / "translations/locale"]
 
 TIME_ZONE = "UTC"
 

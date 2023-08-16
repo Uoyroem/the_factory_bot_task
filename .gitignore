@@ -1,7 +1,8 @@
 .venv
 .vscode
 db.sqlite3
-
+static
+translations
 **/__pycache__
 .env
 **/migrations/*.py

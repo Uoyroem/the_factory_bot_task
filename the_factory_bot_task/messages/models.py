@@ -15,11 +15,6 @@ class Message(models.Model):
 
 
 class Token(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="tokens",
-        related_query_name="token",
-    )
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     token = models.TextField(default=uuid4)
-    telegram_chat_id = models.IntegerField(null=True, blank=True)
+    chat_id = models.IntegerField(null=True, blank=True)

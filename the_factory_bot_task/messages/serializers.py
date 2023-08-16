@@ -12,5 +12,5 @@ class MessageSerializer(serializers.ModelSerializer):
 class TokenSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Token
-        fields = ["id", "token", "telegram_chat_id", "user"]
-        read_only_fields = ["user", "telegram_chat_id", "token"]
+        fields = ["id", "token", "chat_id", "user"]
+        read_only_fields = ["user", "chat_id", "token"]

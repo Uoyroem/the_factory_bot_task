@@ -1,11 +1,13 @@
-from contextlib import suppress
 import asyncio
 
 from rest_framework import viewsets, permissions
-from aiogram import Bot, executor
+from rest_framework.exceptions import APIException, NotFound
+from aiogram import Bot
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
-from aiogram.utils.exceptions import ValidationError
+
+import aiogram.utils.exceptions
 
 from . import models, serializers
 
@@ -19,17 +21,26 @@ class MessageViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         message: models.Message = serializer.save(sender=self.request.user)
-        with suppress(ValidationError):
+        try:
             bot = Bot(settings.TELEGRAM_BOT_TOKEN, proxy=settings.TELEGRAM_BOT_PROXY)
-            for token in models.Token.objects.filter(user=self.request.user):
-                if token.telegram_chat_id is None:
-                    continue
-                asyncio.run(
-                    bot.send_message(
-                        token.telegram_chat_id,
-                        f"{message.sender.get_full_name()}, я получил от тебя сообщение: \n{message.message}",
-                    )
-                )
+        except aiogram.utils.exceptions.ValidationError:
+            raise APIException(
+                _("The bot token was not specified."),
+                400,
+            )
+
+        token: models.Token = self.request.user.token
+        if token is None or token.chat_id is None:
+            raise APIException(
+                _("You don't have a token or you haven't linked the token to the bot."),
+                400,
+            )
+        asyncio.run(
+            bot.send_message(
+                token.chat_id,
+                f"{message.sender.get_full_name()}, я получил от тебя сообщение: \n{message.message}",
+            )
+        )
 
 
 class TokenViewSet(viewsets.ModelViewSet):
@@ -38,4 +49,9 @@ class TokenViewSet(viewsets.ModelViewSet):
     queryset = models.Token.objects.all()
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        try:
+            models.Token.objects.get(user=self.request.user)
+        except models.Token.DoesNotExist:
+            serializer.save(user=self.request.user)
+        else:
+            raise APIException(_("You have already created a token"), 400)
