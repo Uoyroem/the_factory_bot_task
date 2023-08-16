@@ -28,7 +28,7 @@ SECRET_KEY = environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = environ.get("DEBUG", "").lower() == "true"
 CORS_ALLOW_ALL_ORIGINS = True
-ALLOWED_HOSTS = environ.get("ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = environ.get("ALLOWED_HOSTS", "").split(",")
 
 # Application definition
 
