@@ -17,11 +17,10 @@ class Command(BaseCommand):
         @dispatcher.message_handler(commands=["start"])
         async def start_command_handler(message: Message) -> None:
             await message.answer(
-                _(
-                    f"""Hi.
-Here you can link your token generated from {reverse('token-list')} just by sending a text message. 
-After linking, you can send messages from {reverse('message-list')}."""
-                )
+                f"""Привет. 
+                    {reverse('token-list')} Здесь вы можете сгенерировать токен и привязать ко мне.
+                    {reverse('message-list')} Здесь после привязки, вы можете отправлять сообщение. 
+                    """
             )
 
         @dispatcher.message_handler()
